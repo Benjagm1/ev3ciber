@@ -24,13 +24,10 @@ pipeline {
                 // bat 'docker run -v %cd%:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://TU-IP-LOCAL -r reporte-zap.html'
             }
         }
-        
-        stage('Despliegue') {
+     stage('Despliegue') {
             steps {
-                echo 'Desplegando entorno de producción...'
-                // Levanta el contenedor exponiendo el puerto que use la aplicación
-                bat 'docker run -d -p 80:5000 --name produccion-ev3 app-vulnerable-ev3'
+                echo 'Desplegando entorno de producción protegido...'
+                bat 'docker rm -f produccion-ev3 || true'
+                bat 'docker run -d -p 8082:5000 --name produccion-ev3 app-vulnerable-ev3'
             }
         }
-    }
-}
